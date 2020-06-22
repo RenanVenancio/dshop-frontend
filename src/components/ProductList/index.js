@@ -70,9 +70,11 @@ export default function ProductList(props) {
                 <TableCell align="right">{row.stock}</TableCell>
                 <TableCell align="right">{row.sale}</TableCell>
                 <TableCell align="right">
-                  <IconButton aria-label="delete">
+                <Link to={`/products/edit/${row.id}`}> 
+                  <IconButton aria-label="edit">                 
                     <Edit />
                   </IconButton>
+                </Link>
                 </TableCell>
               </TableRow>
             ))}

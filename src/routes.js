@@ -15,6 +15,7 @@ const DefaultRoutes = () => {
             <Container>
                 <Route exact path="/products" component={ProductList}/>
                 <Route exact path="/products/create" component={ProductCreate}/>
+                <Route exact path='/products/edit/:id' component={ ProductCreate }/>
             </Container>
         </>
     )

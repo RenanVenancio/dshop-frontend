@@ -12,6 +12,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import Avatar from "@material-ui/core/Avatar";
 import { Redirect } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 import api from "../../services/api";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,9 +40,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProductCreate(props) {
+  const { id } = useParams()
   const classes = useStyles();
   const [data, setData] = React.useState({
-    id: props.id,
+    id: null,
     name: null,
     barcode: null,
     reference: null,
@@ -61,9 +63,10 @@ export default function ProductCreate(props) {
   // Similar ao componentDidMount e componentDidUpdate:
   useEffect(() => {
     async function loadData() {
-      if (data.id) {
+      
+      if (id) {
         await api
-          .get(`products/${this.state.id}`)
+          .get(`products/${id}`)
           .then((res) => {
             setData({ ...res.data });
           })
@@ -73,6 +76,7 @@ export default function ProductCreate(props) {
       }
     }
     loadData();
+    
   }, []);
 
   const handleSubmit = (e) => {
@@ -81,13 +85,24 @@ export default function ProductCreate(props) {
       headers: { "Content-Type": "application/json" },
     };
     api.post("/products/", data, options).then((res) => {
-      console.log(res);
+      setData({
+        redirectTo: "/products/",
+        redirect: true
+      })
     });
   };
 
+  const handleDelete = async () => {
+    await api.delete(`products/${id}`).then(()=> {
+      setData({
+        redirectTo: "/products/",
+        redirect: true
+      })
+    });
+  }
+
   const handleChange = (prop) => (event) => {
     setData({ ...data, [prop]: event.target.value });
-    console.log(data);
   };
 
   return (
@@ -106,7 +121,7 @@ export default function ProductCreate(props) {
         <form className={classes.root} onSubmit={(e) => handleSubmit(e)}>
           <div className={classes.row}>
             <FormControl
-              fullWidth
+              fullWidth="true"
               className={classes.margin}
               variant="outlined"
             >
@@ -116,10 +131,13 @@ export default function ProductCreate(props) {
                 value={data.barcode}
                 onChange={handleChange("barcode")}
                 labelWidth={140}
+                startAdornment={
+                  <InputAdornment position="start"></InputAdornment>
+                }
               />
             </FormControl>
             <FormControl
-              fullWidth
+              fullWidth="true"
               className={classes.margin}
               variant="outlined"
             >
@@ -129,12 +147,15 @@ export default function ProductCreate(props) {
                 value={data.reference}
                 onChange={handleChange("reference")}
                 labelWidth={140}
+                startAdornment={
+                  <InputAdornment position="start"></InputAdornment>
+                }
               />
             </FormControl>
           </div>
           <div className={classes.row}>
             <FormControl
-              fullWidth
+              fullWidth="true"
               className={classes.margin}
               variant="outlined"
             >
@@ -144,12 +165,15 @@ export default function ProductCreate(props) {
                 value={data.name}
                 onChange={handleChange("name")}
                 labelWidth={120}
+                startAdornment={
+                  <InputAdornment position="start"></InputAdornment>
+                }
               />
             </FormControl>
           </div>
           <div className={classes.row}>
             <FormControl
-              fullWidth
+              fullWidth="true"
               className={classes.margin}
               variant="outlined"
             >
@@ -159,12 +183,15 @@ export default function ProductCreate(props) {
                 value={data.description}
                 onChange={handleChange("description")}
                 labelWidth={70}
+                startAdornment={
+                  <InputAdornment position="start"></InputAdornment>
+                }
               />
             </FormControl>
           </div>
           <div className={classes.row}>
             <FormControl
-              fullWidth
+              fullWidth="true"
               className={classes.margin}
               variant="outlined"
             >
@@ -174,10 +201,13 @@ export default function ProductCreate(props) {
                 value={data.un}
                 onChange={handleChange("un")}
                 labelWidth={60}
+                startAdornment={
+                  <InputAdornment position="start"></InputAdornment>
+                }
               />
             </FormControl>
             <FormControl
-              fullWidth
+              fullWidth="true"
               className={classes.margin}
               variant="outlined"
             >
@@ -193,7 +223,7 @@ export default function ProductCreate(props) {
               />
             </FormControl>
             <FormControl
-              fullWidth
+              fullWidth="true"
               className={classes.margin}
               variant="outlined"
             >
@@ -209,7 +239,7 @@ export default function ProductCreate(props) {
               />
             </FormControl>
             <FormControl
-              fullWidth
+              fullWidth="true"
               className={classes.margin}
               variant="outlined"
             >
@@ -227,7 +257,7 @@ export default function ProductCreate(props) {
           </div>
           <div className={classes.row}>
             <FormControl
-              fullWidth
+              fullWidth="true"
               className={classes.margin}
               variant="outlined"
             >
@@ -237,6 +267,9 @@ export default function ProductCreate(props) {
                 value={data.location}
                 onChange={handleChange("location")}
                 labelWidth={90}
+                startAdornment={
+                  <InputAdornment position="start"></InputAdornment>
+                }
               />
             </FormControl>
           </div>
@@ -253,8 +286,10 @@ export default function ProductCreate(props) {
                 Salvar
               </Button>
             </FormControl>
-            <FormControl fullwidth className={classes.margin}>
+            <FormControl fullwidth="true" className={classes.margin}>
               <Button
+                type="button"
+                onClick={() => handleDelete()}
                 variant="outlined"
                 color="secondary"
                 size="large"
