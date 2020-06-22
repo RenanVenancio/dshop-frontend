@@ -13,15 +13,16 @@ import api from '../../services/api'
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { Link } from 'react-router-dom'
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
   },
   fab: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: theme.spacing(9),
-    right: theme.spacing(5),
+    right: theme.spacing(2),
   },
 }));
 
@@ -78,7 +79,7 @@ export default function ProductList(props) {
           </TableBody>
         </Table>
       </TableContainer>
-
+      {productList.length === 0 ? <LinearProgress /> : ''}
       <Link to="/products/create"> 
         <Fab color="primary" className={classes.fab} aria-label="add">
           <AddIcon />
