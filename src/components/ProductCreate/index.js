@@ -1,14 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import FilledInput from '@material-ui/core/FilledInput';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -62,7 +57,7 @@ export default function InputAdornments() {
     const options = {
       headers: {'Content-Type': 'application/json' }
     }
-    api.post('/products', data, options).then(res => {
+    api.post('/products/', data, options).then(res => {
       console.log(res)
     })
   }
